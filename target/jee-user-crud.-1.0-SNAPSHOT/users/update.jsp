@@ -52,14 +52,44 @@
                     <label>Name</label>
                     <input type="text" class="form-control" name="newUserName" value="${userName}">
                 </div>
+                <c:choose>
+                    <c:when test="${not empty userUserNameMissing}">
+                        <div class="alert alert-danger" role="alert">
+                            You forgot to add a username, try again.
+                        </div>
+                    </c:when>
+                </c:choose>
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" class="form-control" name="newUserEmail" value="${userEmail}">
                 </div>
+                <c:choose>
+                    <c:when test="${not empty userEmailMissing}">
+                        <div class="alert alert-danger" role="alert">
+                            You forgot to add an email, try again.
+                        </div>
+                    </c:when>
+                    <c:when test="${not empty userEmailOccupied}">
+                        <div class="alert alert-danger" role="alert">
+                            That email's occupied, try again.
+                        </div>
+                    </c:when>
+                </c:choose>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" name="newUserPassWord" placeholder="Hasło użytkownika">
+                    <input type="password" class="form-control" name="newUserPassword" placeholder="Hasło użytkownika">
                 </div>
+                <div class="form-group">
+                    <label>Confirm password</label>
+                    <input type="password" class="form-control" name="newUserPasswordConfirm" placeholder="Potwierdź hasło">
+                </div>
+                <c:choose>
+                    <c:when test="${not empty passwordsDifferent}">
+                        <div class="alert alert-danger" role="alert">
+                            Passwords don't match, try again
+                        </div>
+                    </c:when>
+                </c:choose>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1"> Sign me up to your newsletter</label>

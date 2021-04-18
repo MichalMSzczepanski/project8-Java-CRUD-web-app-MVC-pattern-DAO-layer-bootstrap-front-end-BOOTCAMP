@@ -1,8 +1,5 @@
 package pl.coderslab.users;
 
-import pl.coderslab.utils.User;
-import pl.coderslab.utils.UserDao;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,22 +12,11 @@ public class ReadUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        int UserId = Integer.parseInt(request.getParameter("UserId"));
+        UserUtil.returnUsersFromDatabase (request);
 
-        UserDao userDao = new UserDao();
-        userDao.findAll();
-        final User[] usersArray = UserDao.users;
-        int userToUpdateId = Integer.parseInt(request.getParameter("UserId"));
-        User user = new User();
-        for (int i = 0; i < usersArray.length; i++) {
-            if (userToUpdateId == usersArray[i].getId()) {
-                user = UserDao.users[i];
-            }
-        }
-
-        request.setAttribute("showUserID", user.getId());
-        request.setAttribute("showUserUserName", user.getUserName());
-        request.setAttribute("showUserEmail", user.getEmail());
+        request.setAttribute("showUserID", UserUtil.returnUsersFromDatabase (request).getId());
+        request.setAttribute("showUserUserName", UserUtil.returnUsersFromDatabase (request).getUserName());
+        request.setAttribute("showUserEmail", UserUtil.returnUsersFromDatabase (request).getEmail());
 
         getServletContext().getRequestDispatcher("/users/read.jsp").forward(request, response);
 
