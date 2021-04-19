@@ -1,13 +1,10 @@
-package pl.coderslab.users;
-
-import pl.coderslab.utils.User;
-import pl.coderslab.utils.UserDao;
+package pl.coderslab.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class UserUtil {
 
-//    RETURN CURRENT CONTENTS OF DATABASE
+//    RETURN SEARCHED USER BY ID FROM GET
 
     public static User returnUsersFromDatabase (HttpServletRequest request) {
     UserDao.findAll();
@@ -49,7 +46,7 @@ public static void validateEmailisEmpty (String newUserEmail, HttpServletRequest
         }
     }
 
-//    validate inputed passwords
+//    validate inputted passwords
     public static void validatePasswords(String newUserEmail, HttpServletRequest request, String newUserName, String newUserPasswordConfirm, String newUserPassword) {
         if ((!(newUserPasswordConfirm).equals(newUserPassword)) || ("").equals(newUserPassword) || ("").equals(newUserPasswordConfirm)) {
             request.setAttribute("userName", newUserName);
@@ -57,4 +54,6 @@ public static void validateEmailisEmpty (String newUserEmail, HttpServletRequest
             request.setAttribute("passwordsDifferent", "true");
         }
     }
+
+//    check if password has at least 5 characters, a digit a capita letter
 }

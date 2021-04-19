@@ -2,6 +2,7 @@ package pl.coderslab.users;
 
 import pl.coderslab.utils.User;
 import pl.coderslab.utils.UserDao;
+import pl.coderslab.utils.UserUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
