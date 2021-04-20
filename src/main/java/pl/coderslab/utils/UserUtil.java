@@ -7,7 +7,7 @@ public class UserUtil {
 //    RETURN SEARCHED USER BY ID FROM GET
 
     public static User returnUsersFromDatabase (HttpServletRequest request) {
-    UserDao.findAll();
+    UserDao.findAllUsers();
     final User[] usersArray = UserDao.users;
     int userToUpdateId = Integer.parseInt(request.getParameter("UserId"));
     User user = new User();

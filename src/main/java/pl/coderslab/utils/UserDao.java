@@ -8,6 +8,7 @@ import java.util.Arrays;
 public class UserDao {
 
     public static User[] users = new User[0];
+    public static User[] admins = new User[0];
 
     private static final String CREATE_USER_QUERY = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
     private static final String UPDATE_USER_DATA_QUERY = "update users set email = ?, username = ?, password = ? where id = ?;";
@@ -17,6 +18,10 @@ public class UserDao {
 
     private static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users where email = ?";
     private static final String SELECT_CURRENT_IDS = "SELECT id FROM users ORDER BY id ASC;";
+
+    private static final String SELECT_ALL_ADMINS = "SELECT * from admins";
+
+
 
     // hint - fetching user ID (due to its AUTO INCREMENT)
 //    PreparedStatement preStmt = DBUtil.getConnection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -35,7 +40,7 @@ public class UserDao {
                 user.setId(resultSet.getInt(1));
             }
             System.out.println("User created.");
-            findAll();
+            findAllUsers();
             return user;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -118,8 +123,8 @@ public class UserDao {
         }
     }
 
-    // FIND ALL method - read all records in database and input them into an array of Users
-    public static void findAll() {
+    // FIND ALL USERS method - read all records in database and input them into an array of Users
+    public static void findAllUsers() {
         try(Connection conn = DbUtil.getConnection()){
             PreparedStatement listAllUsers = conn.prepareStatement(SELECT_ALL_USERS);
             ResultSet resultListOfUsers = listAllUsers.executeQuery();
@@ -143,6 +148,34 @@ public class UserDao {
         } catch (SQLException e){
             e.printStackTrace();
             System.out.println("issue with accessing database when trying to LIST ALL USERS");
+        }
+    }
+
+    // FIND ALL ADMINS method - read all records in database and input them into an array of Users
+    public static void findAllAdmins() {
+        try(Connection conn = DbUtil.getConnection()){
+            PreparedStatement listAllAdmins = conn.prepareStatement(SELECT_ALL_ADMINS);
+            ResultSet resultListOfAdmins = listAllAdmins.executeQuery();
+            admins = new User[0];
+            while (resultListOfAdmins.next()) {
+                int idOfAdmin = resultListOfAdmins.getInt(1);
+                String emailOfAdmin = resultListOfAdmins.getString(2);
+                String usernameOfAdmin = resultListOfAdmins.getString(3);
+                String passwordOfAdmin = resultListOfAdmins.getString(4);
+                User addAdminToArray = new User(emailOfAdmin, usernameOfAdmin, passwordOfAdmin);
+                admins = addToArray(addAdminToArray, admins);
+            }
+            if(admins.length == 0){
+                System.out.println("There are no admins in the database");
+            } else {
+                System.out.println("Your database consists of the below admins:");
+                for(User user : admins){
+                    System.out.println(("#" + user.getId() + " | " + user.getEmail() + " | " + user.getUserName()));
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("issue with accessing database when trying to LIST ALL ADMINS");
         }
     }
 

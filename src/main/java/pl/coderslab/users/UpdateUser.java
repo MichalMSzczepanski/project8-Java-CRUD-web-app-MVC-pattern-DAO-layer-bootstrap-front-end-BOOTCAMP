@@ -37,7 +37,7 @@ public class UpdateUser extends HttpServlet {
 
 //        set boolean flag if email was used before BUT it can be the email that's being updated
         UserDao userDao = new UserDao();
-        userDao.findAll();
+        userDao.findAllUsers();
         final User[] usersArray = UserDao.users;
         boolean repeatedEmail = false;
         for (int i = 0; i < usersArray.length; i++) {

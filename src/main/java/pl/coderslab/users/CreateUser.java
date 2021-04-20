@@ -35,7 +35,7 @@ public class CreateUser extends HttpServlet {
 
 //       set boolean flag if email was used before
         UserDao userDao = new UserDao();
-        userDao.findAll();
+        userDao.findAllUsers();
         final User[] usersArray = UserDao.users;
         boolean repeatedEmail = false;
         for (int i = 0; i < usersArray.length; i++) {
