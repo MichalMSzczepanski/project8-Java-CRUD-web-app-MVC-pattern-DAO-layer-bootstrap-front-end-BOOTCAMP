@@ -14,7 +14,7 @@ public class DbUtil {
             e.printStackTrace();
         }
 
-        String URL = "jdbc:mysql://localhost:3306/workshop3";
+        String URL = "jdbc:mysql://localhost:3306/workshop3?serverTimezone=UTC";
         String USER = "root";
         String PASS = "coderslab";
 

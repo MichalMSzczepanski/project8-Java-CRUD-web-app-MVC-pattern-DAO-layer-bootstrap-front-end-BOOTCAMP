@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,6 +27,10 @@
 </head>
 
 <body class="bg-gradient-primary">
+
+<%--&lt;%&ndash;clears cache&ndash;%&gt;--%>
+<%--<% response.setHeader("Cache-Control", "no cache, no-store, must-revalidate"); %>--%>
+
 
 <div class="container">
 

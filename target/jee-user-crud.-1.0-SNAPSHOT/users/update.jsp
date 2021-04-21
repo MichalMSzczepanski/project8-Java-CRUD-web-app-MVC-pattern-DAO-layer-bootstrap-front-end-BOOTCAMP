@@ -39,8 +39,6 @@
                 class="fas fa-download fa-sm text-white-50"></i> Lista użytkowników </a>
     </div>
 
-
-
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">

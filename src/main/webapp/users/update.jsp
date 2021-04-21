@@ -26,6 +26,9 @@
 
 <body id="page-top">
 
+<%--clears cache--%>
+<% response.setHeader("Cache-Control", "no cache, no-store, must-revalidate"); %>
+
 <%--external jspf file with PAGE HEADER --%>
 <%@ include file="/header.jspf" %>
 
@@ -38,8 +41,6 @@
         <a href="/user/list" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-download fa-sm text-white-50"></i> Lista użytkowników </a>
     </div>
-
-
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -101,10 +102,6 @@
 
     </div>
     <a class="btn btn-primary" href="/user/list">Back</a>
-
-
-
-
 
 </div>
 <!-- /.container-fluid -->

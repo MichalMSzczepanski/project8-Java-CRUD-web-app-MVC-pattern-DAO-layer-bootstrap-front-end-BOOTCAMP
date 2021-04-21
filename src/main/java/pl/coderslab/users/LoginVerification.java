@@ -19,14 +19,12 @@ public class LoginVerification implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
 
         HttpServletRequest request1 = (HttpServletRequest) request;
-        HttpServletResponse response1 = (HttpServletResponse) response;
         HttpSession session = request1.getSession();
 
         String validateEmail = (String) session.getAttribute("adminEmailConfirmed");
         String validatePassword = (String) session.getAttribute("adminPasswordConfirmed");
 
         if (validateEmail == null || validatePassword == null ) {
-//            response1.sendRedirect("/login");
             ((HttpServletResponse) response).sendRedirect("/login");
         } else {
             chain.doFilter(request, response);

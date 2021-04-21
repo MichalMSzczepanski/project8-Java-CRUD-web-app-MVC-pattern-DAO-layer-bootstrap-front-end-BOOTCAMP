@@ -26,6 +26,9 @@
 
 <body id="page-top">
 
+<%--clears cache--%>
+<% response.setHeader("Cache-Control", "no cache, no-store, must-revalidate"); %>
+
 <%--external jspf file with PAGE HEADER --%>
 <%@ include file="/header.jspf" %>
 
