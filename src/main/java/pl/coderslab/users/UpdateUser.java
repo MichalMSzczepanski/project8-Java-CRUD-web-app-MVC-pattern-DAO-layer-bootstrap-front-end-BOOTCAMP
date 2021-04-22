@@ -71,7 +71,7 @@ public class UpdateUser extends HttpServlet {
 
             UserDao.update(userReplacement, userId);
 
-            response.sendRedirect("/user/list");
+            response.sendRedirect("/user/list?pageNumber=1");
 
         }
     }

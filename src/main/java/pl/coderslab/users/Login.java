@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
                 session.removeAttribute("emailIncorrect");
                 if (loginAdminPassword.equals(user.getRawPassword())) {
                     session.setAttribute("adminPasswordConfirmed", "true");
-                    response.sendRedirect("/user/list");
+                    response.sendRedirect("/user/list?pageNumber=1");
                 } else {
                     System.out.println("user pass incorrect");
                     session.setAttribute("passwordIncorrect", "true");

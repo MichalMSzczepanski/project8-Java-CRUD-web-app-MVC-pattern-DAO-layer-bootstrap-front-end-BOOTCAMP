@@ -70,12 +70,8 @@
                                             <td>
                                                 <a class="btn btn-primary" href="/user/show?UserId=${user.getId()}">Read</a>
                                                 <a class="btn btn-primary" href="/user/edit?UserId=${user.getId()}">Update</a>
-<%--                                                <a class="btn btn-primary" href="/deleteUser?UserId=${user.getId()}">Delete</a>--%>
-
                                                 <!-- Button trigger modal -->
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                    Delete
-                                                </button>
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> Delete </button>
 
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -101,61 +97,24 @@
                                     </c:forEach>
                                     </tbody>
                                 </table>
-<%--                                <nav class="d-flex justify-content-center">--%>
-<%--                                    <ul class="pagination">--%>
-<%--                                        <c:choose>--%>
-<%--                                            <c:when test="${empty pageNumber || pageNumber = 1}">--%>
-<%--                                                <li class="page-item disabled">--%>
-<%--                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>--%>
-<%--                                                </li>--%>
-<%--                                                <li class="page-item"><a class="page-link" href="#">${pageNumber} <span class="sr-only">(current)</span></a></li>--%>
-<%--                                                <li class="page-item active">--%>
-<%--                                                    <a class="page-link" href="http://localhost:8080/user/list?pageNumber=2">2</a>--%>
-<%--                                                </li>--%>
-<%--                                                <li class="page-item">--%>
-<%--                                                    <a class="page-link" href="http://localhost:8080/user/list?pageNumber=2">Next</a>--%>
-<%--                                                </li>--%>
-<%--                                            </c:when>--%>
-<%--                                            <c:otherwise>--%>
-<%--                                                <li class="page-item">--%>
-<%--                                                    <a class="page-link" href="http://localhost:8080/user/list?pageNumber=${pageNumberPrevious}" tabindex="-1">Previous</a>--%>
-<%--                                                </li>--%>
-<%--                                                <li class="page-item"><a class="page-link" href="http://localhost:8080/user/list?pageNumber=${pageNumberPrevious}">${pageNumberPrevious}</a></li>--%>
-<%--                                                <li class="page-item active">--%>
-<%--                                                    <a class="page-link" href="#">${pageNumber}<span class="sr-only">(current)</span></a>--%>
-<%--                                                </li>--%>
-<%--                                                <li class="page-item"><a class="page-link" href="http://localhost:8080/user/list?pageNumber=${pageNumberNext}">${pageNumberNext}</a></li>--%>
-<%--                                                <li class="page-item">--%>
-<%--                                                    <a class="page-link" href=http://localhost:8080/user/list?pageNumber=${pageNumberNext}">Next</a>--%>
-<%--                                                </li>--%>
-<%--                                            </c:otherwise>--%>
-<%--                                        </c:choose>--%>
-<%--                                    </ul>--%>
-<%--                                </nav>--%>
-<%--                                <nav class="d-flex justify-content-center">--%>
-<%--                                    <ul class="pagination">--%>
-<%--                                        <li class="page-item disabled">--%>
-<%--                                            <a class="page-link" href="#" tabindex="-1">Previous</a>--%>
-<%--                                        </li>--%>
-<%--                                        <li class="page-item"><a class="page-link" href="#">1</a></li>--%>
-<%--                                        <li class="page-item active">--%>
-<%--                                            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>--%>
-<%--                                        </li>--%>
-<%--                                        <li class="page-item"><a class="page-link" href="#">3</a></li>--%>
-<%--                                        <li class="page-item">--%>
-<%--                                            <a class="page-link" href="#">Next</a>--%>
-<%--                                        </li>--%>
-<%--                                    </ul>--%>
-<%--                                </nav>--%>
+                                <nav class="d-flex justify-content-center">
+                                    <ul class="pagination">
+                                        ${pageNumber == 1 ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">" }
+                                            <a class="page-link" href="/user/list?pageNumber=${pageNumber - 1}" tabindex="-1">Previous</a>
+                                            </li>
+                                            ${pageNumber == 1 ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber - 1).concat("\">").concat(pageNumber - 1).concat("</a></li>")}
+                                                <li class="page-item active"><a class="page-link" href="#">${pageNumber} <span class="sr-only">(current)</span></a></li>
+                                                    ${pageNumber == totalNumberOfPages ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber + 1).concat("\">").concat(pageNumber + 1).concat("</a></li>")}
+                                            ${pageNumber == totalNumberOfPages ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">"}
+                                                    <a class="page-link" href="/user/list?pageNumber=${pageNumber + 1}">Next</a>
+                                                </li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
-
             </div>
-            <!-- /.container-fluid -->
-
         </div>
-        <!-- End of Main Content -->
 
 <%--external jspf file with PAGE FOOTER --%>
 <%@ include file="/footer.jspf" %>

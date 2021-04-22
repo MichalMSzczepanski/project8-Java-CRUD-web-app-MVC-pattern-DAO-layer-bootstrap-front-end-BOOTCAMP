@@ -9,6 +9,7 @@ public class UserDao {
 
     public static User[] users = new User[0];
     public static User[] admins = new User[0];
+    public static User[] extractedUsers = new User[0];
 
     private static final String CREATE_USER_QUERY = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
     private static final String UPDATE_USER_DATA_QUERY = "update users set email = ?, username = ?, password = ? where id = ?;";
@@ -21,7 +22,7 @@ public class UserDao {
 
     private static final String SELECT_ALL_ADMINS = "SELECT * from admins";
 
-
+    private static final String FETCH_FINAL_USERS = "SELECT * from users order by id limit ?, 10";
 
     // hint - fetching user ID (due to its AUTO INCREMENT)
 //    PreparedStatement preStmt = DBUtil.getConnection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -124,7 +125,7 @@ public class UserDao {
     }
 
     // FIND ALL USERS method - read all records in database and input them into an array of Users
-    public static void findAllUsers() {
+    public static User[] findAllUsers() {
         try(Connection conn = DbUtil.getConnection()){
             PreparedStatement listAllUsers = conn.prepareStatement(SELECT_ALL_USERS);
             ResultSet resultListOfUsers = listAllUsers.executeQuery();
@@ -149,6 +150,7 @@ public class UserDao {
             e.printStackTrace();
             System.out.println("issue with accessing database when trying to LIST ALL USERS");
         }
+        return users;
     }
 
     // FIND ALL ADMINS method - read all records in database and input them into an array of Users
@@ -177,6 +179,37 @@ public class UserDao {
             e.printStackTrace();
             System.out.println("issue with accessing database when trying to LIST ALL ADMINS");
         }
+    }
+
+    // EXPORT TABLE WITH USERS TO BE VIEWED
+
+    public static User[] fetchDisplayedUserArray (int pageNumber, int numberOfUsers) {
+        try(Connection conn = DbUtil.getConnection()) {
+            PreparedStatement fetchDisplayedUsers = conn.prepareStatement(FETCH_FINAL_USERS);
+            fetchDisplayedUsers.setInt(1, (pageNumber - 1) * 10);
+            ResultSet resultFetchDisplayedUsers = fetchDisplayedUsers.executeQuery();
+            extractedUsers = new User[0];
+            while(resultFetchDisplayedUsers.next()) {
+                int idOfUser = resultFetchDisplayedUsers.getInt(1);
+                String emailOfUser = resultFetchDisplayedUsers.getString(2);
+                String usernameOfUser = resultFetchDisplayedUsers.getString(3);
+                String passwordOfUser = resultFetchDisplayedUsers.getString(4);
+                User addUserToArray = new User(idOfUser, emailOfUser, usernameOfUser, passwordOfUser);
+                extractedUsers = addToArray(addUserToArray, extractedUsers);
+            }
+            if(extractedUsers.length == 0){
+                System.out.println("There are no users in the database");
+            } else {
+                System.out.println("Your list of users to preview consists of the below users:");
+                for(User user : extractedUsers){
+                    System.out.println(("#" + user.getId() + " | " + user.getEmail() + " | " + user.getUserName()));
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("issue with accessing database when trying to FETCH TABLES WITH USERS TO BE VIEWED");
+        }
+        return extractedUsers;
     }
 
     // auxilary method - validate if inputed id reflect an id in the database
