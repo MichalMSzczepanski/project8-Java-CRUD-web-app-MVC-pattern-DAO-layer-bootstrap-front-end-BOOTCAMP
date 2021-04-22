@@ -1,5 +1,6 @@
 package pl.coderslab.users;
 
+import pl.coderslab.utils.User;
 import pl.coderslab.utils.UserDao;
 
 import javax.servlet.ServletException;
@@ -16,10 +17,14 @@ public class UserList extends HttpServlet {
 
         // fetching only demanded table of users to display
 
-        UserDao.fetchDisplayedUserArray(Integer.parseInt(request.getParameter("pageNumber")), UserDao.findAllUsers().length);
-        request.setAttribute("extractedUsers", UserDao.extractedUsers);
-        request.setAttribute("pageNumber", request.getParameter("pageNumber"));
         double totalNumberOfPages = UserDao.findAllUsers().length/10 + 1;
+        int pageNumberValid = request.getParameter("pageNumber") == null ? 1 : Integer.parseInt(request.getParameter("pageNumber"));
+        if (pageNumberValid > totalNumberOfPages || pageNumberValid < 1) {
+            pageNumberValid = 1;
+        }
+        User[] finalUserExtracted = UserDao.fetchDisplayedUserArray(pageNumberValid, UserDao.findAllUsers().length);
+        request.setAttribute("extractedUsers", finalUserExtracted);
+        request.setAttribute("pageNumber", pageNumberValid);
         request.setAttribute("totalNumberOfPages", totalNumberOfPages);
         getServletContext().getRequestDispatcher("/users/list.jsp").forward(request, response);
 

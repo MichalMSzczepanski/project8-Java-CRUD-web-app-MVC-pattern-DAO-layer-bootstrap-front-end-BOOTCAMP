@@ -9,7 +9,7 @@ public class UserDao {
 
     public static User[] users = new User[0];
     public static User[] admins = new User[0];
-    public static User[] extractedUsers = new User[0];
+
 
     private static final String CREATE_USER_QUERY = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
     private static final String UPDATE_USER_DATA_QUERY = "update users set email = ?, username = ?, password = ? where id = ?;";
@@ -184,6 +184,7 @@ public class UserDao {
     // EXPORT TABLE WITH USERS TO BE VIEWED
 
     public static User[] fetchDisplayedUserArray (int pageNumber, int numberOfUsers) {
+        User[] extractedUsers = new User[0];
         try(Connection conn = DbUtil.getConnection()) {
             PreparedStatement fetchDisplayedUsers = conn.prepareStatement(FETCH_FINAL_USERS);
             fetchDisplayedUsers.setInt(1, (pageNumber - 1) * 10);

@@ -106,8 +106,8 @@
                                                 <li class="page-item active"><a class="page-link" href="#">${pageNumber} <span class="sr-only">(current)</span></a></li>
                                                     ${pageNumber == totalNumberOfPages ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber + 1).concat("\">").concat(pageNumber + 1).concat("</a></li>")}
                                             ${pageNumber == totalNumberOfPages ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">"}
-                                                    <a class="page-link" href="/user/list?pageNumber=${pageNumber + 1}">Next</a>
-                                                </li>
+                                            <a class="page-link" href="/user/list?pageNumber=${pageNumber + 1}">Next</a>
+                                            </li>
                                     </ul>
                                 </nav>
                             </div>
