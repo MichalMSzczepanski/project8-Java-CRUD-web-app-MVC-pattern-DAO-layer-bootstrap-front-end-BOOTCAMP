@@ -28,10 +28,6 @@
 
 <body class="bg-gradient-primary">
 
-<%--&lt;%&ndash;clears cache&ndash;%&gt;--%>
-<%--<% response.setHeader("Cache-Control", "no cache, no-store, must-revalidate"); %>--%>
-
-
 <div class="container">
 
     <!-- Outer Row -->

@@ -26,6 +26,9 @@
 
 <body id="page-top">
 
+<%--clears cache--%>
+<% response.setHeader("Cache-Control", "no cache, no-store, must-revalidate"); %>
+
 <%--external jspf file with PAGE HEADER --%>
 <%@ include file="/header.jspf" %>
 
@@ -99,10 +102,6 @@
 
     </div>
     <a class="btn btn-primary" href="/user/list">Back</a>
-
-
-
-
 
 </div>
 <!-- /.container-fluid -->

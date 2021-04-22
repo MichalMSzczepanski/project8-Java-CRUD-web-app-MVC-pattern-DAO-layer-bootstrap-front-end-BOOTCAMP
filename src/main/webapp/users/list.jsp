@@ -46,8 +46,9 @@
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
+                        <div class="card-header py-3 d-flex align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">Lista Użytkowników</h6>
+                            <a href="/user/add" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Dodaj użytkownika</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -61,7 +62,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${userArray}" var="user">
+                                    <c:forEach items="${extractedUsers}" var="user">
                                         <tr>
                                             <td>${user.getId()}</td>
                                             <td>${user.getUserName()}</td>
@@ -100,7 +101,52 @@
                                     </c:forEach>
                                     </tbody>
                                 </table>
-                                <a href="/user/add" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Dodaj użytkownika</a>
+<%--                                <nav class="d-flex justify-content-center">--%>
+<%--                                    <ul class="pagination">--%>
+<%--                                        <c:choose>--%>
+<%--                                            <c:when test="${empty pageNumber || pageNumber = 1}">--%>
+<%--                                                <li class="page-item disabled">--%>
+<%--                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>--%>
+<%--                                                </li>--%>
+<%--                                                <li class="page-item"><a class="page-link" href="#">${pageNumber} <span class="sr-only">(current)</span></a></li>--%>
+<%--                                                <li class="page-item active">--%>
+<%--                                                    <a class="page-link" href="http://localhost:8080/user/list?pageNumber=2">2</a>--%>
+<%--                                                </li>--%>
+<%--                                                <li class="page-item">--%>
+<%--                                                    <a class="page-link" href="http://localhost:8080/user/list?pageNumber=2">Next</a>--%>
+<%--                                                </li>--%>
+<%--                                            </c:when>--%>
+<%--                                            <c:otherwise>--%>
+<%--                                                <li class="page-item">--%>
+<%--                                                    <a class="page-link" href="http://localhost:8080/user/list?pageNumber=${pageNumberPrevious}" tabindex="-1">Previous</a>--%>
+<%--                                                </li>--%>
+<%--                                                <li class="page-item"><a class="page-link" href="http://localhost:8080/user/list?pageNumber=${pageNumberPrevious}">${pageNumberPrevious}</a></li>--%>
+<%--                                                <li class="page-item active">--%>
+<%--                                                    <a class="page-link" href="#">${pageNumber}<span class="sr-only">(current)</span></a>--%>
+<%--                                                </li>--%>
+<%--                                                <li class="page-item"><a class="page-link" href="http://localhost:8080/user/list?pageNumber=${pageNumberNext}">${pageNumberNext}</a></li>--%>
+<%--                                                <li class="page-item">--%>
+<%--                                                    <a class="page-link" href=http://localhost:8080/user/list?pageNumber=${pageNumberNext}">Next</a>--%>
+<%--                                                </li>--%>
+<%--                                            </c:otherwise>--%>
+<%--                                        </c:choose>--%>
+<%--                                    </ul>--%>
+<%--                                </nav>--%>
+<%--                                <nav class="d-flex justify-content-center">--%>
+<%--                                    <ul class="pagination">--%>
+<%--                                        <li class="page-item disabled">--%>
+<%--                                            <a class="page-link" href="#" tabindex="-1">Previous</a>--%>
+<%--                                        </li>--%>
+<%--                                        <li class="page-item"><a class="page-link" href="#">1</a></li>--%>
+<%--                                        <li class="page-item active">--%>
+<%--                                            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>--%>
+<%--                                        </li>--%>
+<%--                                        <li class="page-item"><a class="page-link" href="#">3</a></li>--%>
+<%--                                        <li class="page-item">--%>
+<%--                                            <a class="page-link" href="#">Next</a>--%>
+<%--                                        </li>--%>
+<%--                                    </ul>--%>
+<%--                                </nav>--%>
                             </div>
                         </div>
                     </div>
