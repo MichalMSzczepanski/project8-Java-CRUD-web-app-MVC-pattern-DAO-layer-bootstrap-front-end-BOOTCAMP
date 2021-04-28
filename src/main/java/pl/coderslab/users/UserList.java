@@ -15,16 +15,23 @@ public class UserList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // fetching only demanded table of users to display
+        // fetch data from SEARCH BAR if exists(located in header.jspf)
+        String searchedParam = request.getParameter("search");
 
-        double totalNumberOfPages = UserDao.findAllUsers().length/10 + 1;
-        int pageNumberValid = request.getParameter("pageNumber") == null ? 1 : Integer.parseInt(request.getParameter("pageNumber"));
-        if (pageNumberValid > totalNumberOfPages || pageNumberValid < 1) {
-            pageNumberValid = 1;
+        // fetching number of pages (two scenarios - search param null or provided)
+        double totalNumberOfPages = (searchedParam == null) ? UserDao.findAllUsers().length/10 + 1 : UserDao.findAllUsers(searchedParam).length/10 + 1 ;
+
+        int currentPageNumber = request.getParameter("pageNumber") == null ? 1 : Integer.parseInt(request.getParameter("pageNumber"));
+
+        // redirect to first page if user changes url
+        if (currentPageNumber > totalNumberOfPages || currentPageNumber < 1) {
+            currentPageNumber = 1;
         }
-        User[] finalUserExtracted = UserDao.fetchDisplayedUserArray(pageNumberValid, UserDao.findAllUsers().length);
+
+        // return table dedicated with users - dedicated to search and specific page provided above
+        User[] finalUserExtracted = ((searchedParam == null)) ? UserDao.fetchDisplayedUserArray(currentPageNumber, UserDao.findAllUsers().length) : UserDao.fetchDisplayedUserArray(currentPageNumber, UserDao.findAllUsers(searchedParam).length, searchedParam);
         request.setAttribute("extractedUsers", finalUserExtracted);
-        request.setAttribute("pageNumber", pageNumberValid);
+        request.setAttribute("pageNumber", currentPageNumber);
         request.setAttribute("totalNumberOfPages", totalNumberOfPages);
         getServletContext().getRequestDispatcher("/users/list.jsp").forward(request, response);
 

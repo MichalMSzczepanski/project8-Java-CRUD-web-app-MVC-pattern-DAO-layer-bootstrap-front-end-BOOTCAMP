@@ -37,17 +37,15 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">UsersCRUD</h1>
+<%--                <div class="d-sm-flex align-items-center justify-content-between mb-4">--%>
+<%--                    <h1 class="h3 mb-0 text-gray-800">UsersCRUD</h1>--%>
 
-                </div>
-
-
+<%--                </div>--%>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Lista Użytkowników</h6>
+                            <h6><a class="m-0 font-weight-bold text-primary" href="/user/list">User List</a></h6>
                             <a href="/user/add" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Dodaj użytkownika</a>
                         </div>
                         <div class="card-body">
@@ -100,16 +98,29 @@
                                 <nav class="d-flex justify-content-center">
                                     <ul class="pagination">
                                         ${pageNumber == 1 ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">" }
-                                            <a class="page-link" href="/user/list?pageNumber=${pageNumber - 1}" tabindex="-1">Previous</a>
-                                            </li>
-                                            ${pageNumber == 1 ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber - 1).concat("\">").concat(pageNumber - 1).concat("</a></li>")}
-                                                <li class="page-item active"><a class="page-link" href="#">${pageNumber} <span class="sr-only">(current)</span></a></li>
-                                                    ${pageNumber == totalNumberOfPages ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber + 1).concat("\">").concat(pageNumber + 1).concat("</a></li>")}
-                                            ${pageNumber == totalNumberOfPages ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">"}
-                                            <a class="page-link" href="/user/list?pageNumber=${pageNumber + 1}">Next</a>
-                                            </li>
+                                        <a class="page-link" href="/user/list?pageNumber=${pageNumber - 1}" tabindex="-1">Previous</a>
+                                        </li>
+                                        ${pageNumber == 1 ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber - 1).concat("\">").concat(pageNumber - 1).concat("</a></li>")}
+                                        <li class="page-item active"><a class="page-link" href="#">${pageNumber} <span class="sr-only">(current)</span></a></li>
+                                        ${pageNumber == totalNumberOfPages ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber + 1).concat("\">").concat(pageNumber + 1).concat("</a></li>")}
+                                        ${pageNumber == totalNumberOfPages ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">"}
+                                        <a class="page-link" href="/user/list?pageNumber=${pageNumber + 1}">Next</a>
+                                        </li>
                                     </ul>
+<%--                                    alt version --%>
+<%--                                    <ul class="pagination">--%>
+<%--                                        ${pageNumber == 1 ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">" }--%>
+<%--                                        <a class="page-link" href="/user/list?pageNumber=${(pageNumber - 1).concat((not empty param.search ? "&search=".concat(param.search): ""))}" tabindex="-1">Previous</a>--%>
+<%--                                        </li>--%>
+<%--                                        ${pageNumber == 1 ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber - 1).concat("\">").concat(pageNumber - 1).concat("</a></li>")}--%>
+<%--                                        <li class="page-item active"><a class="page-link" href="#">${pageNumber} <span class="sr-only">(current)</span></a></li>--%>
+<%--                                        ${pageNumber == totalNumberOfPages ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber + 1).concat("\">").concat(pageNumber + 1).concat("</a></li>")}--%>
+<%--                                        ${pageNumber == totalNumberOfPages ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">"}--%>
+<%--                                        <a class="page-link" href="/user/list?pageNumber=${pageNumber + 1}">Next</a>--%>
+<%--                                        </li>--%>
+<%--                                    </ul>--%>
                                 </nav>
+
                             </div>
                         </div>
                     </div>

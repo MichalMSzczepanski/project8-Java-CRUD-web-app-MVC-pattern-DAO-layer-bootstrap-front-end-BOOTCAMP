@@ -7,23 +7,66 @@
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-            <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-laugh-wink"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3">SB Admin 22<sup>2</sup></div>
+            <div class="sidebar-brand-text mx-3">Java CRUD app</div>
         </a>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
+<%--        <!-- Divider -->--%>
+<%--        <hr class="sidebar-divider my-0">--%>
 
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="index.html">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
+<%--        <!-- Nav Item - Dashboard -->--%>
+<%--        <li class="nav-item active">--%>
+<%--            <a class="nav-link" href="index.html">--%>
+<%--                <i class="fas fa-fw fa-tachometer-alt"></i>--%>
+<%--                <span>Dashboard</span></a>--%>
+<%--        </li>--%>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+<%--        <div class="sidebar-heading">--%>
+<%--            Addons--%>
+<%--        </div>--%>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+               aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Theme</span>
+            </a>
+            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+<%--                    <h6 class="collapse-header">Login Screens:</h6>--%>
+                    <a class="collapse-item" href="login.html">Neutral</a>
+                    <a class="collapse-item" href="register.html">Dark</a>
+                    <a class="collapse-item" href="forgot-password.html">Red</a>
+<%--                    <div class="collapse-divider"></div>--%>
+<%--                    <h6 class="collapse-header">Other Pages:</h6>--%>
+<%--                    <a class="collapse-item" href="404.html">404 Page</a>--%>
+<%--                    <a class="collapse-item" href="blank.html">Blank Page</a>--%>
+                </div>
+<%--                <div class="dropdown">--%>
+<%--                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--%>
+<%--                        Dropdown button--%>
+<%--                    </button>--%>
+<%--                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">--%>
+<%--                        <a class="dropdown-item" href="#">Action</a>--%>
+<%--                        <a class="dropdown-item" href="#">Another action</a>--%>
+<%--                        <a class="dropdown-item" href="#">Something else here</a>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+            </div>
+            <div class="sidebar-card">
+                <i class="fas fa-award fa-7x mb-3 mt-3"></i>
+                <p class="text-center mb-3"><strong>Top viewed user</strong></p>
+                <a class="btn btn-primary btn-sm mb-3" href="https://startbootstrap.com/theme/sb-admin-pro">${userName}Mike</a>
+                <p class="text-center mb-2">views: 5</p>
+            </div>
         </li>
 
         <!-- Sidebar Toggler (Sidebar) -->
+
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
@@ -38,26 +81,25 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow d-flex flex-lg-row-reverse">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow d-flex flex-row justify-content-between">
 
                 <!-- Sidebar Toggle (Topbar) -->
-                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                    <i class="fa fa-bars"></i>
-                </button>
+<%--                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">--%>
+<%--                    <i class="fa fa-bars"></i>--%>
+<%--                </button>--%>
 
-                <%--                <!-- Topbar Search -->--%>
-                <%--                <form--%>
-                <%--                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">--%>
-                <%--                    <div class="input-group">--%>
-                <%--                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."--%>
-                <%--                               aria-label="Search" aria-describedby="basic-addon2">--%>
-                <%--                        <div class="input-group-append">--%>
-                <%--                            <button class="btn btn-primary" type="button">--%>
-                <%--                                <i class="fas fa-search fa-sm"></i>--%>
-                <%--                            </button>--%>
-                <%--                        </div>--%>
-                <%--                    </div>--%>
-                <%--                </form>--%>
+                <!-- Topbar Search -->
+                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                               aria-label="Search" aria-describedby="basic-addon2" name="search">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search fa-sm"></i> search
+                            </button>
+                        </div>
+                    </div>
+                </form>
 
                 <a class="btn btn-primary " href="/users/logout">Logout</a>
 

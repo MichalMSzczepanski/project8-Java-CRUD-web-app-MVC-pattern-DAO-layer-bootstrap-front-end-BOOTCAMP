@@ -24,6 +24,13 @@ public class UserDao {
 
     private static final String FETCH_FINAL_USERS = "SELECT * from users order by id limit ?, 10";
 
+    private static final String FETCH_FINAL_USERS_FROM_SEARCH = "select * from users where username like concat('%',?,'%') or email like concat('%',?,'%') order by id asc limit ?, 10";
+
+    private static final String FIND_ALL_USERS_FROM_SEARCH = "select * from users where username like concat('%',?,'%') or email like concat('%',?,'%') order by id";
+
+
+
+
     // hint - fetching user ID (due to its AUTO INCREMENT)
 //    PreparedStatement preStmt = DBUtil.getConnection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
@@ -124,6 +131,37 @@ public class UserDao {
         }
     }
 
+    // FIND ALL USERS WHEN SEARCH IS FILLED OUT
+    public static User[] findAllUsers(String searchedParam) {
+        try(Connection conn = DbUtil.getConnection()){
+            PreparedStatement fetchDisplayedUsers = conn.prepareStatement(FIND_ALL_USERS_FROM_SEARCH);
+            fetchDisplayedUsers.setString(1, searchedParam);
+            fetchDisplayedUsers.setString(2, searchedParam);
+            ResultSet resultListOfUsers = fetchDisplayedUsers.executeQuery();
+            users = new User[0];
+            while (resultListOfUsers.next()) {
+                int idOfUser = resultListOfUsers.getInt(1);
+                String emailOfUser = resultListOfUsers.getString(2);
+                String usernameOfUser = resultListOfUsers.getString(3);
+                String passwordOfUser = resultListOfUsers.getString(4);
+                User addUserToArray = new User(idOfUser, emailOfUser, usernameOfUser, passwordOfUser);
+                users = addToArray(addUserToArray, users);
+            }
+            if(users.length == 0){
+                System.out.println("There are no users in the database from this search");
+            } else {
+                System.out.println("Your SEARCH from the database consists of the below users:");
+                for(User user : users){
+                    System.out.println(("#" + user.getId() + " | " + user.getEmail() + " | " + user.getUserName()));
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("issue with accessing database when trying to LIST ALL USERS FROM SEARCH");
+        }
+        return users;
+    }
+
     // FIND ALL USERS method - read all records in database and input them into an array of Users
     public static User[] findAllUsers() {
         try(Connection conn = DbUtil.getConnection()){
@@ -181,8 +219,42 @@ public class UserDao {
         }
     }
 
-    // EXPORT TABLE WITH USERS TO BE VIEWED
+    //    private static final String FETCH_FINAL_USERS_FROM_SEARCH = "select * from users where username like concat('%',?,'%') or email like concat('%',?,'%') order by id asc limit ?, 10";
 
+    // EXPORT TABLE WITH USERS WHEN SEARCHED IS FILELD OUT
+    public static User[] fetchDisplayedUserArray (int pageNumber, int numberOfUsers, String searchedParam) {
+        User[] extractedUsers = new User[0];
+        try(Connection conn = DbUtil.getConnection()) {
+            PreparedStatement fetchDisplayedUsers = conn.prepareStatement(FETCH_FINAL_USERS_FROM_SEARCH);
+            fetchDisplayedUsers.setString(1, searchedParam);
+            fetchDisplayedUsers.setString(2, searchedParam);
+            fetchDisplayedUsers.setInt(3, (pageNumber - 1) * 10);
+            ResultSet resultFetchDisplayedUsers = fetchDisplayedUsers.executeQuery();
+            extractedUsers = new User[0];
+            while(resultFetchDisplayedUsers.next()) {
+                int idOfUser = resultFetchDisplayedUsers.getInt(1);
+                String emailOfUser = resultFetchDisplayedUsers.getString(2);
+                String usernameOfUser = resultFetchDisplayedUsers.getString(3);
+                String passwordOfUser = resultFetchDisplayedUsers.getString(4);
+                User addUserToArray = new User(idOfUser, emailOfUser, usernameOfUser, passwordOfUser);
+                extractedUsers = addToArray(addUserToArray, extractedUsers);
+            }
+            if(extractedUsers.length == 0){
+                System.out.println("There are no users in the database");
+            } else {
+                System.out.println("Your list of users to preview consists of the below users:");
+                for(User user : extractedUsers){
+                    System.out.println(("#" + user.getId() + " | " + user.getEmail() + " | " + user.getUserName()));
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("issue with accessing database when trying to FETCH TABLES WITH USERS TO BE VIEWED");
+        }
+        return extractedUsers;
+    }
+
+    // EXPORT TABLE WITH USERS TO BE VIEWED - WITHOUT SEARCH FILLED OUT
     public static User[] fetchDisplayedUserArray (int pageNumber, int numberOfUsers) {
         User[] extractedUsers = new User[0];
         try(Connection conn = DbUtil.getConnection()) {
