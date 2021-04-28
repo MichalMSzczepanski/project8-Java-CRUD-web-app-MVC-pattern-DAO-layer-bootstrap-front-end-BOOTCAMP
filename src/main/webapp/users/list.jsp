@@ -97,33 +97,70 @@
                                 </table>
                                 <nav class="d-flex justify-content-center">
                                     <ul class="pagination">
-<%--                                        previous icon button--%>
-                                        ${pageNumber == 1 ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">" }
-                                        <a class="page-link" href="/user/list?pageNumber=${pageNumber - 1}" tabindex="-1">Previous</a>
-                                        </li>
-<%--                                        previous page numeric button--%>
-                                        ${pageNumber == 1 ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber - 1).concat("\">").concat(pageNumber - 1).concat("</a></li>")}
-<%--                                        current page numeric button--%>
-                                        <li class="page-item active"><a class="page-link" href="#">${pageNumber} <span class="sr-only">(current)</span></a></li>
-<%--                                        next page numeric button--%>
-                                        ${pageNumber == totalNumberOfPages ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber + 1).concat("\">").concat(pageNumber + 1).concat("</a></li>")}
-<%--                                        next page icon button--%>
-                                        ${pageNumber == totalNumberOfPages ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">"}
-                                        <a class="page-link" href="/user/list?pageNumber=${pageNumber + 1}">Next</a>
-                                        </li>
+                                        <c:choose>
+
+<%--                                            NAV WITH PARAM SEARCH--%>
+                                            <c:when test="${not empty param.search}">
+                                                <%--                                        previous icon button--%>
+                                                ${pageNumber == 1 ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">" }
+                                                <a class="page-link" href="/user/list?search=${param.search}&pageNumber=${pageNumber - 1}" tabindex="-1">Previous</a>
+                                                </li>
+                                                <%--                                        previous page numeric button--%>
+                                                ${pageNumber == 1 ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?search=".concat(param.search).concat("&pageNumber=").concat(pageNumber - 1).concat("\">").concat(pageNumber - 1).concat("</a></li>")}
+                                                <%--                                        current page numeric button--%>
+                                                <li class="page-item active"><a class="page-link" href="#">${pageNumber} <span class="sr-only">(current)</span></a></li>
+                                                <%--                                        next page numeric button--%>
+                                                ${pageNumber == totalNumberOfPages ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?search=".concat(param.search).concat("&pageNumber=").concat(pageNumber + 1).concat("\">").concat(pageNumber + 1).concat("</a></li>")}
+                                                <%--                                        next page icon button--%>
+                                                ${pageNumber == totalNumberOfPages ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">"}
+                                                <a class="page-link" href="/user/list?search=${param.search}&pageNumber=${pageNumber + 1}">Next</a>
+                                                </li>
+                                            </c:when>
+                                            <c:otherwise>
+
+<%--                                                NAV WITHOUT PARAM SEARCH--%>
+                                                <%--                                        previous icon button--%>
+                                                ${pageNumber == 1 ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">" }
+                                                <a class="page-link" href="/user/list?pageNumber=${pageNumber - 1}" tabindex="-1">Previous</a>
+                                                </li>
+                                                <%--                                        previous page numeric button--%>
+                                                ${pageNumber == 1 ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber - 1).concat("\">").concat(pageNumber - 1).concat("</a></li>")}
+                                                <%--                                        current page numeric button--%>
+                                                <li class="page-item active"><a class="page-link" href="#">${pageNumber} <span class="sr-only">(current)</span></a></li>
+                                                <%--                                        next page numeric button--%>
+                                                ${pageNumber == totalNumberOfPages ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber + 1).concat("\">").concat(pageNumber + 1).concat("</a></li>")}
+                                                <%--                                        next page icon button--%>
+                                                ${pageNumber == totalNumberOfPages ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">"}
+                                                <a class="page-link" href="/user/list?pageNumber=${pageNumber + 1}">Next</a>
+                                                </li>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </ul>
-<%--                                    alt version --%>
+<%--                                    search param first version--%>
 <%--                                    <ul class="pagination">--%>
+<%--                                        &lt;%&ndash;                                        previous icon button&ndash;%&gt;--%>
 <%--                                        ${pageNumber == 1 ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">" }--%>
-<%--                                        <a class="page-link" href="/user/list?pageNumber=${(pageNumber - 1).concat((not empty param.search ? "&search=".concat(param.search): ""))}" tabindex="-1">Previous</a>--%>
+<%--                                        <a class="page-link" href="/user/list?pageNumber=${pageNumber - 1}" tabindex="-1">Previous</a>--%>
 <%--                                        </li>--%>
+<%--                                        &lt;%&ndash;                                        previous page numeric button&ndash;%&gt;--%>
 <%--                                        ${pageNumber == 1 ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber - 1).concat("\">").concat(pageNumber - 1).concat("</a></li>")}--%>
+<%--                                        &lt;%&ndash;                                        current page numeric button&ndash;%&gt;--%>
 <%--                                        <li class="page-item active"><a class="page-link" href="#">${pageNumber} <span class="sr-only">(current)</span></a></li>--%>
-<%--                                        ${pageNumber == totalNumberOfPages ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber + 1).concat("\">").concat(pageNumber + 1).concat("</a></li>")}--%>
+<%--                                        &lt;%&ndash;                                        next page numeric button&ndash;%&gt;--%>
+<%--                                        <c:choose>--%>
+<%--                                            <c:when test="${not empty param.search}">--%>
+<%--                                                ${pageNumber == totalNumberOfPages ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?search=".concat(param.search).concat("&pageNumber=").concat(pageNumber + 1).concat("\">").concat(pageNumber + 1).concat("</a></li>")}--%>
+<%--                                            </c:when>--%>
+<%--                                            <c:otherwise>--%>
+<%--                                                ${pageNumber == totalNumberOfPages ? "" : "<li class=\"page-item \"><a class=\"page-link\" href=\"/user/list?pageNumber=".concat(pageNumber + 1).concat("\">").concat(pageNumber + 1).concat("</a></li>")}--%>
+<%--                                            </c:otherwise>--%>
+<%--                                        </c:choose>--%>
+<%--                                        &lt;%&ndash;                                        next page icon button&ndash;%&gt;--%>
 <%--                                        ${pageNumber == totalNumberOfPages ? "<li class=\"page-item disabled\">" : "<li class=\"page-item\">"}--%>
 <%--                                        <a class="page-link" href="/user/list?pageNumber=${pageNumber + 1}">Next</a>--%>
 <%--                                        </li>--%>
 <%--                                    </ul>--%>
+<%--
                                 </nav>
 
                             </div>
