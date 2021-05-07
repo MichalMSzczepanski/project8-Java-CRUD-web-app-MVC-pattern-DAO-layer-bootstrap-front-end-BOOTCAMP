@@ -26,9 +26,9 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-primary" >
 
-<div class="bg-primary vh-100 d-flex flex-column justify-content-center align-items-center">
+<div class="bg-primary vh-100 d-flex flex-column justify-content-center align-items-center" id="accordionSidebar">
 
     <!-- Outer Row -->
 <%--    <div class="row justify-content-center bg-success">--%>
@@ -97,7 +97,7 @@
 <%--                                    <a class="small" href="forgot-password.html">Forgot Password?</a>--%>
 <%--                                </div>--%>
                                 <div class="text-center mt-3">
-                                    <a class="small" href="mailto:michal.m.szczepanski@gmail.com">Request an account!</a>
+                                    <a class="small font-change" href="mailto:michal.m.szczepanski@gmail.com">Request an account!</a>
                                 </div>
                             </div>
                         </div>
@@ -120,6 +120,8 @@
 
 <!-- Custom scripts for all pages-->
 <script src="js/sb-admin-2.min.js"></script>
+
+<script src="../../theme/js/demo/script.js"></script>
 
 </body>
 

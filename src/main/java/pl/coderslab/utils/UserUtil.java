@@ -6,17 +6,27 @@ public class UserUtil {
 
 //    RETURN SEARCHED USER BY ID FROM GET
 
+    public static User returnUserFromDatabase (int id) {
+        User user = new User();
+        User[] usersArray = UserDao.findAllUsers();
+        for (int i = 0; i < usersArray.length; i++)
+            if (id == usersArray[i].getId()) {
+                user = usersArray[i];
+            }
+        return user;
+    }
+
     public static User returnUsersFromDatabase (HttpServletRequest request) {
-    UserDao.findAllUsers();
-    final User[] usersArray = UserDao.users;
+    final User[] usersArray = UserDao.findAllUsers();
     int userToUpdateId = Integer.parseInt(request.getParameter("UserId"));
     User user = new User();
         for (int i = 0; i < usersArray.length; i++)
             if (userToUpdateId == usersArray[i].getId()) {
-                user = UserDao.users[i];
+                user = UserDao.findAllUsers()[i];
             }
         return user;
     }
+
 
 //    USER INPUT VALIDATION
 

@@ -34,9 +34,7 @@ public class CreateUser extends HttpServlet {
         String newUserPasswordConfirm = request.getParameter("newUserPassWordConfirm");
 
 //       set boolean flag if email was used before
-        UserDao userDao = new UserDao();
-        userDao.findAllUsers();
-        final User[] usersArray = UserDao.users;
+        final User[] usersArray = UserDao.findAllUsers();
         boolean repeatedEmail = false;
         for (int i = 0; i < usersArray.length; i++) {
             if (newUserEmail.equals(usersArray[i].getEmail())) {
@@ -59,7 +57,7 @@ public class CreateUser extends HttpServlet {
 
         User user = new User(newUserEmail, newUserName, newUserPassword);
 
-        userDao.create(user);
+        UserDao.create(user);
 
         response.sendRedirect("/user/list");
 

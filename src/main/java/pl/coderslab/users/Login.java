@@ -28,9 +28,7 @@ public class Login extends HttpServlet {
         String loginAdminEmail = request.getParameter("loginAdminEmail");
         String loginAdminPassword = request.getParameter("loginAdminPassword");
 
-        UserDao.findAllAdmins();
-
-        User[] admins = UserDao.admins;
+        User[] admins = UserDao.findAllAdmins();
 
         // logged in admin has two attributes present!
             // adminEmailConfirmed

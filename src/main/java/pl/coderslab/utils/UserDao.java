@@ -7,10 +7,6 @@ import java.util.Arrays;
 
 public class UserDao {
 
-    public static User[] users = new User[0];
-    public static User[] admins = new User[0];
-
-
     private static final String CREATE_USER_QUERY = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
     private static final String UPDATE_USER_DATA_QUERY = "update users set email = ?, username = ?, password = ? where id = ?;";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
@@ -25,8 +21,10 @@ public class UserDao {
     private static final String FETCH_FINAL_USERS = "SELECT * from users order by id limit ?, 10";
 
     private static final String FETCH_FINAL_USERS_FROM_SEARCH = "select * from users where username like concat('%',?,'%') or email like concat('%',?,'%') order by id asc limit ?, 10";
-
     private static final String FIND_ALL_USERS_FROM_SEARCH = "select * from users where username like concat('%',?,'%') or email like concat('%',?,'%') order by id";
+
+    private static final String RETURN_NUMBER_OF_USERS = "select count(id) from users";
+    private static final String RETURN_NUMBER_OF_USERS_FROM_SEARCH = "select count(id) from users where username like concat('%',?,'%') or email like concat('%',?,'%') order by id";
 
 
 
@@ -42,6 +40,7 @@ public class UserDao {
             statement.setString(1, user.getEmail());
             statement.setString(3, hashPassword(user.getPassword()));
             statement.executeUpdate();
+
             //Pobieramy wstawiony do bazy identyfikator, a następnie ustawiamy id obiektu user.
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -133,6 +132,7 @@ public class UserDao {
 
     // FIND ALL USERS WHEN SEARCH IS FILLED OUT
     public static User[] findAllUsers(String searchedParam) {
+        User[] users = new User[0];
         try(Connection conn = DbUtil.getConnection()){
             PreparedStatement fetchDisplayedUsers = conn.prepareStatement(FIND_ALL_USERS_FROM_SEARCH);
             fetchDisplayedUsers.setString(1, searchedParam);
@@ -162,8 +162,9 @@ public class UserDao {
         return users;
     }
 
-    // FIND ALL USERS method - read all records in database and input them into an array of Users
+    // Find all users and return all in one array
     public static User[] findAllUsers() {
+        User[] users = new User[0];
         try(Connection conn = DbUtil.getConnection()){
             PreparedStatement listAllUsers = conn.prepareStatement(SELECT_ALL_USERS);
             ResultSet resultListOfUsers = listAllUsers.executeQuery();
@@ -191,8 +192,9 @@ public class UserDao {
         return users;
     }
 
-    // FIND ALL ADMINS method - read all records in database and input them into an array of Users
-    public static void findAllAdmins() {
+    // FIND ALL ADMINS and return all in one array
+    public static User[] findAllAdmins() {
+        User[] admins = new User[0];
         try(Connection conn = DbUtil.getConnection()){
             PreparedStatement listAllAdmins = conn.prepareStatement(SELECT_ALL_ADMINS);
             ResultSet resultListOfAdmins = listAllAdmins.executeQuery();
@@ -217,12 +219,11 @@ public class UserDao {
             e.printStackTrace();
             System.out.println("issue with accessing database when trying to LIST ALL ADMINS");
         }
+        return admins;
     }
 
-    //    private static final String FETCH_FINAL_USERS_FROM_SEARCH = "select * from users where username like concat('%',?,'%') or email like concat('%',?,'%') order by id asc limit ?, 10";
-
-    // EXPORT TABLE WITH USERS WHEN SEARCHED IS FILELD OUT
-    public static User[] fetchDisplayedUserArray (int pageNumber, int numberOfUsers, String searchedParam) {
+    // FETCH SEARCHED USERS and return array - page included
+    public static User[] fetchDisplayedUserArray (int pageNumber, String searchedParam) {
         User[] extractedUsers = new User[0];
         try(Connection conn = DbUtil.getConnection()) {
             PreparedStatement fetchDisplayedUsers = conn.prepareStatement(FETCH_FINAL_USERS_FROM_SEARCH);
@@ -255,7 +256,7 @@ public class UserDao {
     }
 
     // EXPORT TABLE WITH USERS TO BE VIEWED - WITHOUT SEARCH FILLED OUT
-    public static User[] fetchDisplayedUserArray (int pageNumber, int numberOfUsers) {
+    public static User[] fetchDisplayedUserArray (int pageNumber) {
         User[] extractedUsers = new User[0];
         try(Connection conn = DbUtil.getConnection()) {
             PreparedStatement fetchDisplayedUsers = conn.prepareStatement(FETCH_FINAL_USERS);
@@ -284,6 +285,48 @@ public class UserDao {
         }
         return extractedUsers;
     }
+
+    //RETURN TOTAL NUMBER OF USERS
+    public static int returnNumberOfUsers() {
+        int numberOfUsers = 0;
+        try(Connection conn = DbUtil.getConnection()) {
+            PreparedStatement returnNumberOfUsers = conn.prepareStatement(RETURN_NUMBER_OF_USERS);
+            ResultSet rs = returnNumberOfUsers.executeQuery();
+            while(rs.next()) {
+                numberOfUsers = rs.getInt(1);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("issue with accessing database when trying to RETURN NUMBER OF USERS");
+        }
+        System.out.println("final number of users in database is: " + numberOfUsers);
+        return numberOfUsers;
+    }
+
+    // RETURN TOTAL NUMBER OF USERS WHEN SEARCHED IS USED
+
+    public static Integer returnNumberOfUsers(String searchedParam) {
+        Integer numberOfUsers = 0;
+        try(Connection conn = DbUtil.getConnection()){
+            PreparedStatement returnNumberOfUsersWithSearch = conn.prepareStatement(RETURN_NUMBER_OF_USERS_FROM_SEARCH);
+            returnNumberOfUsersWithSearch.setString(1, searchedParam);
+            returnNumberOfUsersWithSearch.setString(2, searchedParam);
+            ResultSet rs = returnNumberOfUsersWithSearch.executeQuery();
+            while (rs.next()) {
+                numberOfUsers = rs.getInt(1);
+            }
+            if(numberOfUsers.equals(null)){
+                System.out.println("There are no users in the database from this search");
+            } else {
+                System.out.println("final number of users using search is: " + numberOfUsers);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("issue with accessing database when trying to LIST ALL USERS FROM SEARCH");
+        }
+        return numberOfUsers;
+    }
+
 
     // auxilary method - validate if inputed id reflect an id in the database
     public static boolean validateID (int id) {

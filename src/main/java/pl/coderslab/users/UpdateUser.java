@@ -17,12 +17,13 @@ public class UpdateUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        UserUtil.returnUsersFromDatabase (request);
+        int UserId = Integer.parseInt(request.getParameter("UserId"));
+        User user = UserDao.read(UserId);
 
         HttpSession sess = request.getSession();
-        sess.setAttribute("userId", UserUtil.returnUsersFromDatabase (request).getId());
-        sess.setAttribute("userName", UserUtil.returnUsersFromDatabase (request).getUserName());
-        sess.setAttribute("userEmail", UserUtil.returnUsersFromDatabase (request).getEmail());
+        sess.setAttribute("userId", user.getId());
+        sess.setAttribute("userName", user.getUserName());
+        sess.setAttribute("userEmail", user.getEmail());
         getServletContext().getRequestDispatcher("/users/update.jsp").forward(request, response);
 
     }
@@ -36,9 +37,7 @@ public class UpdateUser extends HttpServlet {
         String newUserPasswordConfirm = request.getParameter("newUserPasswordConfirm");
 
 //        set boolean flag if email was used before BUT it can be the email that's being updated
-        UserDao userDao = new UserDao();
-        userDao.findAllUsers();
-        final User[] usersArray = UserDao.users;
+        final User[] usersArray = UserDao.findAllUsers();
         boolean repeatedEmail = false;
         for (int i = 0; i < usersArray.length; i++) {
             if (newUserEmail.equals(usersArray[i].getEmail()) && (!UserUtil.returnUsersFromDatabase(request).getEmail().equals(usersArray[i].getEmail()))) {
