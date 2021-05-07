@@ -45,8 +45,8 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex align-items-center justify-content-between">
-                            <h6><a class="m-0 font-weight-bold text-primary font-change"  href="/user/list">User List</a></h6>
-                            <a href="/user/add" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Dodaj użytkownika</a>
+                            <h6><a class="m-0 font-weight-bold text-primary font-change"  href="/user/list">User list</a></h6>
+                            <a href="/user/add" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Add User</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -54,9 +54,9 @@
                                     <thead>
                                     <tr>
                                         <th>Id</th>
-                                        <th>Nazwa użytkownika</th>
+                                        <th>User name</th>
                                         <th>Email</th>
-                                        <th>Akcja</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
