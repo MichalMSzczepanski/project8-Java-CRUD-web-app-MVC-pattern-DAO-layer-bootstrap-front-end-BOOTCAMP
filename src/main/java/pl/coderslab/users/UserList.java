@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "UserList", value = "/user/list")
@@ -30,6 +31,12 @@ public class UserList extends HttpServlet {
             if (currentPageNumber > totalNumberOfPages || currentPageNumber < 1) {
                 currentPageNumber = 1;
             }
+
+            // fetch most viewed user
+
+            User user = UserDao.fetchMostViewedUser();
+            HttpSession session = request.getSession();
+            session.setAttribute("mostViewedUser", user);
 
             // return table dedicated with users - dedicated to search and specific page provided above
             User[] finalUserExtracted;

@@ -1,4 +1,4 @@
-// set background color based on available variable
+// function for setting background color
 changeBackgroundColor = function (variable) {
     const backgroundElement = document.querySelector("#accordionSidebar");
     backgroundElement.classList.remove("bg-gradient-primary");
@@ -7,7 +7,7 @@ changeBackgroundColor = function (variable) {
     backgroundElement.classList.add(variable);
 };
 
-// set button color based on available variable
+// function for setting button color
 changeButtonColor = function (variable) {
     const buttonElement = document.querySelectorAll(".btn");
     buttonElement.forEach(function (button) {
@@ -24,7 +24,7 @@ changeButtonColor = function (variable) {
     });
 };
 
-// set font color based on veriable
+// function for setting font color
 changeFontColor = function (variable) {
     const fontElement = document.querySelectorAll(".font-change");
     fontElement.forEach(function (font) {
@@ -41,7 +41,7 @@ changeFontColor = function (variable) {
     });
 }
 
-// listen for click event on three tabs in THEME ACCORDION
+// listen for click event on three tabs in THEME ACCORDION to define chosen color for website theme
 if (document.body.contains(document.querySelector("#colorPicker"))) {
     const chosenColor = document.querySelector("#colorPicker").children;
     const chosenColorArray = Array.from(chosenColor);
@@ -54,6 +54,8 @@ if (document.body.contains(document.querySelector("#colorPicker"))) {
             console.log(element.id);
             // based on click event, set button color
             changeButtonColor(element.id);
+            // based on click event, set font color
+            changeFontColor(element.id);
         });
     });
 }
@@ -65,6 +67,6 @@ if (fixedColor !== null) {
     changeBackgroundColor(fixedColor);
     // set button color to previously chosen color
     changeButtonColor(fixedColor);
-    // set font color
+    // set font color to previously chosen color
     changeFontColor(fixedColor);
 }

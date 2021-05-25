@@ -26,8 +26,9 @@ public class UserDao {
     private static final String RETURN_NUMBER_OF_USERS = "select count(id) from users";
     private static final String RETURN_NUMBER_OF_USERS_FROM_SEARCH = "select count(id) from users where username like concat('%',?,'%') or email like concat('%',?,'%') order by id";
 
-
-
+    private static final String FETCH_MOST_VIEWED_USER = "select * from users order by user_views desc limit 1;";
+    private static final String FETCH_NUMBER_OF_USER_VIEWS_BY_ID = "select user_views from users where id = ?;";
+    private static final String UPDATE_NUMBER_OF_USER_VIEWS_BY_ID = "update users set user_views = ? where id = ?";
 
     // hint - fetching user ID (due to its AUTO INCREMENT)
 //    PreparedStatement preStmt = DBUtil.getConnection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -327,6 +328,52 @@ public class UserDao {
         return numberOfUsers;
     }
 
+//    FETCH USER WITH MOST VIEWS
+
+    public static User fetchMostViewedUser() {
+        User user = new User();
+        try(Connection connection = DbUtil.getConnection();
+        PreparedStatement ps = connection.prepareStatement(FETCH_MOST_VIEWED_USER)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                int id = rs.getInt(1);
+                String email = rs.getString(2);
+                String username = rs.getString(3);
+                String password = rs.getString(4);
+                int user_views = rs.getInt(5);
+                user.setId(id);
+                user.setEmail(email);
+                user.setUserName(username);
+                user.setPassword(password);
+                user.setUser_views(user_views);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("issue with fetching most viewed user ");
+        }
+        return user;
+    }
+
+//    UPDATE USER VIEWS BY ONE
+
+    public static void updateUserViewsByOne(int id) {
+        int numberOfViews = 0;
+        try (Connection connection = DbUtil.getConnection();
+             PreparedStatement ps1 = connection.prepareStatement(FETCH_NUMBER_OF_USER_VIEWS_BY_ID);
+             PreparedStatement ps2 = connection.prepareStatement(UPDATE_NUMBER_OF_USER_VIEWS_BY_ID);) {
+            ps1.setInt(1, id);
+            ResultSet rs = ps1.executeQuery();
+            while (rs.next()) {
+                numberOfViews = rs.getInt(1);
+            }
+            ps2.setInt(1, ++numberOfViews);
+            ps2.setInt(2, id);
+            ps2.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("issue with updating user user_views where user id: " + id);
+        }
+    }
 
     // auxilary method - validate if inputed id reflect an id in the database
     public static boolean validateID (int id) {

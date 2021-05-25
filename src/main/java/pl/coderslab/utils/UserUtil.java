@@ -65,5 +65,5 @@ public static void validateEmailisEmpty (String newUserEmail, HttpServletRequest
         }
     }
 
-//    check if password has at least 5 characters, a digit a capita letter
+//    check if password has at least 5 characters, a digit a capital letter
 }

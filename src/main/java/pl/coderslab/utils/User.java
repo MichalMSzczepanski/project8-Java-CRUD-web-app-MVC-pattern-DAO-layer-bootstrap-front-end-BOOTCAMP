@@ -8,6 +8,7 @@ public class User {
     private String email;
     private String userName;
     private String password;
+    private int user_views;
 
     // constructor for initializing user in UPDATE method
     public User(){
@@ -18,6 +19,7 @@ public class User {
         this.email = email;
         this.userName = userName;
         this.password = password;
+        this.user_views = 0;
     }
 
     // constructor for UserDao methods
@@ -25,6 +27,7 @@ public class User {
         this.id = id;
         this.email = email;
         this.userName = userName;
+        this.user_views = 0;
         setPassword(password);
     }
 
@@ -63,5 +66,18 @@ public class User {
 
     public void setPassword(String password) {
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    public int getUser_views() {
+        return user_views;
+    }
+
+    public void setUser_views(int user_views) {
+        this.user_views = user_views;
+    }
+
+    public String getUserDisplayName() {
+        String[] temp = this.userName.split(" ");
+        return temp[0].toLowerCase() + "-" + temp[1].toLowerCase();
     }
 }

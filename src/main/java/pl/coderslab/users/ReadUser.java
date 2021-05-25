@@ -17,6 +17,7 @@ public class ReadUser extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         int UserId = Integer.parseInt(request.getParameter("UserId"));
+        UserDao.updateUserViewsByOne(UserId);
         User user = UserDao.read(UserId);
 
         HttpSession sess = request.getSession();

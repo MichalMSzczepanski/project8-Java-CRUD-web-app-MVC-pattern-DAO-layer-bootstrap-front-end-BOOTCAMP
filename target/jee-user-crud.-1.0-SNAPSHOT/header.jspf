@@ -58,10 +58,10 @@
 <%--                </div>--%>
             </div>
             <div class="sidebar-card">
-                <i class="fas fa-award fa-7x mb-3 mt-3"></i>
+                <img src="https://southparkstudios.mtvnimages.com/shared/characters/kids/${mostViewedUser.getUserDisplayName()}.png?height=165">
                 <p class="text-center mb-3"><strong>Top viewed user</strong></p>
-                <a class="btn btn-primary btn-sm mb-3" href="https://startbootstrap.com/theme/sb-admin-pro">${userName}Mike</a>
-                <p class="text-center mb-2">views: 5</p>
+                <a class="btn btn-primary btn-sm mb-3" href="/user/show?UserId=${mostViewedUser.getId()}">${mostViewedUser.getUserName()}</a>
+                <p class="text-center mb-2">${mostViewedUser.getUser_views()} views</p>
             </div>
         </li>
 
