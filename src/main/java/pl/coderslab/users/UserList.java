@@ -33,7 +33,6 @@ public class UserList extends HttpServlet {
             }
 
             // fetch most viewed user
-
             User user = UserDao.fetchMostViewedUser();
             HttpSession session = request.getSession();
             session.setAttribute("mostViewedUser", user);

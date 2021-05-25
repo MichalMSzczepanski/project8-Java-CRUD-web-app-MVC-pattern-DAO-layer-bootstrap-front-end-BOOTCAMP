@@ -1,68 +1,40 @@
 package pl.coderslab.utils;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class UserUtil {
-
-//    RETURN SEARCHED USER BY ID FROM GET
-
-    public static User returnUserFromDatabase (int id) {
-        User user = new User();
-        User[] usersArray = UserDao.findAllUsers();
-        for (int i = 0; i < usersArray.length; i++)
-            if (id == usersArray[i].getId()) {
-                user = usersArray[i];
-            }
-        return user;
-    }
-
-    public static User returnUsersFromDatabase (HttpServletRequest request) {
-    final User[] usersArray = UserDao.findAllUsers();
-    int userToUpdateId = Integer.parseInt(request.getParameter("UserId"));
-    User user = new User();
-        for (int i = 0; i < usersArray.length; i++)
-            if (userToUpdateId == usersArray[i].getId()) {
-                user = UserDao.findAllUsers()[i];
-            }
-        return user;
-    }
-
 
 //    USER INPUT VALIDATION
 
 //    check if email was repeated
-    public static void validateEmailRepeat(boolean repeatedEmail, HttpServletRequest request, String newUserName) {
+    public static void validateEmailRepeat(boolean repeatedEmail, HttpSession session) {
         if (repeatedEmail) {
-            request.setAttribute("userName", newUserName);
-            request.setAttribute("userEmailOccupied", "true");
-            request.getServletContext().removeAttribute("passwordsDifferent");
+            System.out.println("validate email repeate");
+            session.setAttribute("userEmailOccupied", "true");
         }
     }
 //   check if email was empty
-public static void validateEmailisEmpty (String newUserEmail, HttpServletRequest request, String newUserName) {
+public static void validateEmailisEmpty (String newUserEmail, HttpSession session ) {
     if ("".equals(newUserEmail)) {
-        request.setAttribute("userName", newUserName);
-        request.setAttribute("userEmailMissing", "true");
-        request.getServletContext().removeAttribute("passwordsDifferent");
+        System.out.println("validate email is empty");
+        session.setAttribute("userEmailMissing", "true");
     }
 }
 
 //    check if user name is empty
-    public static void validateUserName(String newUserEmail, HttpServletRequest request, String newUserName) {
+    public static void validateUserName(String newUserName, HttpSession session) {
         if ("".equals(newUserName)) {
-            request.setAttribute("userEmail", newUserEmail);
-            request.setAttribute("userUserNameMissing", "true");
-            request.getServletContext().removeAttribute("passwordsDifferent");
+            System.out.println("validate user name is empty");
+            session.setAttribute("userUserNameMissing", "true");
         }
     }
 
 //    validate inputted passwords
-    public static void validatePasswords(String newUserEmail, HttpServletRequest request, String newUserName, String newUserPasswordConfirm, String newUserPassword) {
+    public static void validatePasswords(String newUserPasswordConfirm, String newUserPassword, HttpSession session) {
         if ((!(newUserPasswordConfirm).equals(newUserPassword)) || ("").equals(newUserPassword) || ("").equals(newUserPasswordConfirm)) {
-            request.setAttribute("userName", newUserName);
-            request.setAttribute("userEmail", newUserEmail);
-            request.setAttribute("passwordsDifferent", "true");
+            session.setAttribute("passwordsDifferent", "true");
         }
+        System.out.println("validate pass method");
     }
 
 //    check if password has at least 5 characters, a digit a capital letter

@@ -12,23 +12,19 @@ public class UserDao {
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE id = ?";
     private static final String SELECT_ALL_USERS = "SELECT * from users";
-
     private static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users where email = ?";
     private static final String SELECT_CURRENT_IDS = "SELECT id FROM users ORDER BY id ASC;";
-
     private static final String SELECT_ALL_ADMINS = "SELECT * from admins";
-
     private static final String FETCH_FINAL_USERS = "SELECT * from users order by id limit ?, 10";
-
     private static final String FETCH_FINAL_USERS_FROM_SEARCH = "select * from users where username like concat('%',?,'%') or email like concat('%',?,'%') order by id asc limit ?, 10";
     private static final String FIND_ALL_USERS_FROM_SEARCH = "select * from users where username like concat('%',?,'%') or email like concat('%',?,'%') order by id";
-
     private static final String RETURN_NUMBER_OF_USERS = "select count(id) from users";
     private static final String RETURN_NUMBER_OF_USERS_FROM_SEARCH = "select count(id) from users where username like concat('%',?,'%') or email like concat('%',?,'%') order by id";
-
     private static final String FETCH_MOST_VIEWED_USER = "select * from users order by user_views desc limit 1;";
     private static final String FETCH_NUMBER_OF_USER_VIEWS_BY_ID = "select user_views from users where id = ?;";
     private static final String UPDATE_NUMBER_OF_USER_VIEWS_BY_ID = "update users set user_views = ? where id = ?";
+    private static final String FETCH_NUMBER_OF_EMAIL_OCCURENCES = "select count(id) from users where email like ?";
+    private static final String GET_USER_EMAIL_BY_ID = "select (email) from users where id = ?";
 
     // hint - fetching user ID (due to its AUTO INCREMENT)
 //    PreparedStatement preStmt = DBUtil.getConnection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -48,7 +44,6 @@ public class UserDao {
                 user.setId(resultSet.getInt(1));
             }
             System.out.println("User created.");
-            findAllUsers();
             return user;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -164,34 +159,34 @@ public class UserDao {
     }
 
     // Find all users and return all in one array
-    public static User[] findAllUsers() {
-        User[] users = new User[0];
-        try(Connection conn = DbUtil.getConnection()){
-            PreparedStatement listAllUsers = conn.prepareStatement(SELECT_ALL_USERS);
-            ResultSet resultListOfUsers = listAllUsers.executeQuery();
-            users = new User[0];
-            while (resultListOfUsers.next()) {
-                int idOfUser = resultListOfUsers.getInt(1);
-                String emailOfUser = resultListOfUsers.getString(2);
-                String usernameOfUser = resultListOfUsers.getString(3);
-                String passwordOfUser = resultListOfUsers.getString(4);
-                User addUserToArray = new User(idOfUser, emailOfUser, usernameOfUser, passwordOfUser);
-                users = addToArray(addUserToArray, users);
-            }
-            if(users.length == 0){
-                System.out.println("There are no users in the database");
-            } else {
-                System.out.println("Your database consists of the below users:");
-                for(User user : users){
-                    System.out.println(("#" + user.getId() + " | " + user.getEmail() + " | " + user.getUserName()));
-                }
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-            System.out.println("issue with accessing database when trying to LIST ALL USERS");
-        }
-        return users;
-    }
+//    public static User[] findAllUsers() {
+//        User[] users = new User[0];
+//        try(Connection conn = DbUtil.getConnection()){
+//            PreparedStatement listAllUsers = conn.prepareStatement(SELECT_ALL_USERS);
+//            ResultSet resultListOfUsers = listAllUsers.executeQuery();
+//            users = new User[0];
+//            while (resultListOfUsers.next()) {
+//                int idOfUser = resultListOfUsers.getInt(1);
+//                String emailOfUser = resultListOfUsers.getString(2);
+//                String usernameOfUser = resultListOfUsers.getString(3);
+//                String passwordOfUser = resultListOfUsers.getString(4);
+//                User addUserToArray = new User(idOfUser, emailOfUser, usernameOfUser, passwordOfUser);
+//                users = addToArray(addUserToArray, users);
+//            }
+//            if(users.length == 0){
+//                System.out.println("There are no users in the database");
+//            } else {
+//                System.out.println("Your database consists of the below users:");
+//                for(User user : users){
+//                    System.out.println(("#" + user.getId() + " | " + user.getEmail() + " | " + user.getUserName()));
+//                }
+//            }
+//        } catch (SQLException e){
+//            e.printStackTrace();
+//            System.out.println("issue with accessing database when trying to LIST ALL USERS");
+//        }
+//        return users;
+//    }
 
     // FIND ALL ADMINS and return all in one array
     public static User[] findAllAdmins() {
@@ -305,7 +300,6 @@ public class UserDao {
     }
 
     // RETURN TOTAL NUMBER OF USERS WHEN SEARCHED IS USED
-
     public static Integer returnNumberOfUsers(String searchedParam) {
         Integer numberOfUsers = 0;
         try(Connection conn = DbUtil.getConnection()){
@@ -329,7 +323,6 @@ public class UserDao {
     }
 
 //    FETCH USER WITH MOST VIEWS
-
     public static User fetchMostViewedUser() {
         User user = new User();
         try(Connection connection = DbUtil.getConnection();
@@ -355,7 +348,6 @@ public class UserDao {
     }
 
 //    UPDATE USER VIEWS BY ONE
-
     public static void updateUserViewsByOne(int id) {
         int numberOfViews = 0;
         try (Connection connection = DbUtil.getConnection();
@@ -374,6 +366,78 @@ public class UserDao {
             System.out.println("issue with updating user user_views where user id: " + id);
         }
     }
+
+    // test email methods
+//    public static void main(String[] args) {
+//        System.out.println(getUserEmailById(5));
+//        System.out.println();
+//        System.out.println(validateUserEmailOccurences("clyde@gmail.com", 5));
+//    }
+
+//   GET USER EMAIL BY USER ID
+    public static String getUserEmailById(int id) {
+        String userEmail = "";
+        try(Connection connection = DbUtil.getConnection();
+        PreparedStatement ps = connection.prepareStatement(GET_USER_EMAIL_BY_ID)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                userEmail = rs.getString(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userEmail;
+    }
+
+//    VALIDATE IS EMAIL HAS BEEN USED BEFORE FOR SPECIFIC USER
+    public static boolean validateUserEmailOccurences(String newEmail, int id) {
+        boolean emailUsedBefore = false;
+        int numberOfEmailOccurences = 0;
+        String currentEmail = getUserEmailById(id);
+            try(Connection connection = DbUtil.getConnection();
+                PreparedStatement ps = connection.prepareStatement(FETCH_NUMBER_OF_EMAIL_OCCURENCES);){
+                ps.setString(1, newEmail);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    numberOfEmailOccurences = rs.getInt(1);
+                }
+                if (numberOfEmailOccurences >= 1) {
+                    if (newEmail.equals(currentEmail)) {
+                        emailUsedBefore = false;
+                    } else {
+                        emailUsedBefore = true;
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("issue with accessing database when fetching number of email occurences");
+            }
+        return emailUsedBefore;
+    }
+
+//    VALIDATE OVERALL NUMBER OF EMAILO CCURENCIES
+public static boolean validateOverallUserEmailOccurences(String newEmail) {
+    boolean emailUsedBefore = false;
+    int numberOfEmailOccurences = 0;
+    try(Connection connection = DbUtil.getConnection();
+        PreparedStatement ps = connection.prepareStatement(FETCH_NUMBER_OF_EMAIL_OCCURENCES);){
+        ps.setString(1, newEmail);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            numberOfEmailOccurences = rs.getInt(1);
+        }
+        if (numberOfEmailOccurences >= 1) {
+            emailUsedBefore = true;
+            }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("issue with accessing database when fetching overall number of email occurences");
+    }
+    return emailUsedBefore;
+}
+
 
     // auxilary method - validate if inputed id reflect an id in the database
     public static boolean validateID (int id) {

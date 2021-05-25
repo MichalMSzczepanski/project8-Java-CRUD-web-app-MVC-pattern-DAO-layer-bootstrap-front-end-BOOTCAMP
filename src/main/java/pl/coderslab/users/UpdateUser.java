@@ -31,42 +31,48 @@ public class UpdateUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+//        extract data from form
         String newUserName = request.getParameter("newUserName");
         String newUserEmail = request.getParameter("newUserEmail");
         String newUserPassword = request.getParameter("newUserPassword");
         String newUserPasswordConfirm = request.getParameter("newUserPasswordConfirm");
+        int id = Integer.valueOf(request.getParameter("UserId"));
+
+//        set and clear session for new input validation
+        HttpSession session = request.getSession();
+        session.removeAttribute("userEmailOccupied");
+        session.removeAttribute("userEmailMissing");
+        session.removeAttribute("userUserNameMissing");
+        session.removeAttribute("passwordsDifferent");
 
 //        set boolean flag if email was used before BUT it can be the email that's being updated
-        final User[] usersArray = UserDao.findAllUsers();
-        boolean repeatedEmail = false;
-        for (int i = 0; i < usersArray.length; i++) {
-            if (newUserEmail.equals(usersArray[i].getEmail()) && (!UserUtil.returnUsersFromDatabase(request).getEmail().equals(usersArray[i].getEmail()))) {
-                repeatedEmail = true;
-            }
-        }
+        boolean repeatedEmail = UserDao.validateUserEmailOccurences(newUserEmail, id);
 
 //        check all potential errors
-            while ((("").equals(newUserName) || ("").equals(newUserEmail) || ("").equals(newUserPassword) || ("").equals(newUserPasswordConfirm) || (!(newUserPasswordConfirm).equals(newUserPassword))) || repeatedEmail) {
+        while ((("").equals(newUserName)
+                    || ("").equals(newUserEmail)
+                    || ("").equals(newUserPassword)
+                    || ("").equals(newUserPasswordConfirm)
+                    || (!(newUserPasswordConfirm).equals(newUserPassword)))
+                    || repeatedEmail) {
                 // if email was repeated
-                UserUtil.validateEmailRepeat(repeatedEmail, request, newUserName);
-                // if user name was missing
-                UserUtil.validateUserName(newUserEmail, request, newUserName);
-                // if email was missing
-                UserUtil.validateEmailisEmpty(newUserEmail, request, newUserName);
+                UserUtil.validateEmailRepeat(repeatedEmail, session);
+                // if email was empty
+                UserUtil.validateEmailisEmpty(newUserEmail, session);
+                // if user name was empty
+                UserUtil.validateUserName(newUserName, session);
                 // if one of the passwords was empty or they didn't match
-                UserUtil.validatePasswords(newUserEmail, request, newUserName, newUserPasswordConfirm, newUserPassword);
-                getServletContext().getRequestDispatcher("/users/update.jsp").forward(request, response);
+                UserUtil.validatePasswords(newUserPasswordConfirm, newUserPassword, session);
+                doGet(request, response);
             }
 
-            HttpSession sess = request.getSession();
-
-            String finalUserName = (("").equals(newUserName)) ? (String) sess.getAttribute("userName") : newUserName;
-            String finalUserEmail = (("").equals(newUserEmail)) ? (String) sess.getAttribute("userEmail") : newUserEmail;
-            String finalUserPassword = (("").equals(newUserPassword)) ? (String) sess.getAttribute("userPassword") : newUserEmail;
+            String finalUserName = (("").equals(newUserName)) ? (String) session.getAttribute("userName") : newUserName;
+            String finalUserEmail = (("").equals(newUserEmail)) ? (String) session.getAttribute("userEmail") : newUserEmail;
+            String finalUserPassword = (("").equals(newUserPassword)) ? (String) session.getAttribute("userPassword") : newUserEmail;
 
             User userReplacement = new User(finalUserEmail, finalUserName, finalUserPassword);
 
-            int userId = (Integer) sess.getAttribute("userId");
+            int userId = (Integer) session.getAttribute("userId");
 
             UserDao.update(userReplacement, userId);
 

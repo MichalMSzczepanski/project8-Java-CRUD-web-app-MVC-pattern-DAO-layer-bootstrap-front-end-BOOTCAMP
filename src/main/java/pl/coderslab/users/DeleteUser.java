@@ -14,10 +14,8 @@ public class DeleteUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        UserDao userDao = new UserDao();
-        userDao.findAllUsers();
         int userToDeleteID = Integer.parseInt(request.getParameter("UserId"));
-        userDao.delete(userToDeleteID);
+        UserDao.delete(userToDeleteID);
         response.sendRedirect("/user/list");
 
     }

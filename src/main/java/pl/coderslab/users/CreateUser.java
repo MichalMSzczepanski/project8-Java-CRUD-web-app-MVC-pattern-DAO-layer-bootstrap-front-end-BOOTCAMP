@@ -21,7 +21,6 @@ public class CreateUser extends HttpServlet {
         sess.removeAttribute("userName");
         sess.removeAttribute("userEmail");
         getServletContext().getRequestDispatcher("/users/create.jsp").forward(request, response);
-
     }
 
     @Override
@@ -33,26 +32,32 @@ public class CreateUser extends HttpServlet {
         String newUserPassword = request.getParameter("newUserPassWord");
         String newUserPasswordConfirm = request.getParameter("newUserPassWordConfirm");
 
-//       set boolean flag if email was used before
-        final User[] usersArray = UserDao.findAllUsers();
-        boolean repeatedEmail = false;
-        for (int i = 0; i < usersArray.length; i++) {
-            if (newUserEmail.equals(usersArray[i].getEmail())) {
-                repeatedEmail = true;
-            }
-        }
+//        set and clear session for new input validation
+        HttpSession session = request.getSession();
+        session.removeAttribute("userEmailOccupied");
+        session.removeAttribute("userEmailMissing");
+        session.removeAttribute("userUserNameMissing");
+        session.removeAttribute("passwordsDifferent");
+
+//        set boolean flag if email was used before BUT it can be the email that's being updated
+        boolean repeatedEmail = UserDao.validateOverallUserEmailOccurences(newUserEmail);
 
 //        check all potential errors
-        while( (("").equals(newUserName) || ("").equals(newUserEmail) || ("").equals(newUserPassword) || ("").equals(newUserPasswordConfirm) || (!(newUserPasswordConfirm).equals(newUserPassword))) || repeatedEmail) {
+        while ((("").equals(newUserName)
+                || ("").equals(newUserEmail)
+                || ("").equals(newUserPassword)
+                || ("").equals(newUserPasswordConfirm)
+                || (!(newUserPasswordConfirm).equals(newUserPassword)))
+                || repeatedEmail) {
             // if email was repeated
-            UserUtil.validateEmailRepeat(repeatedEmail, request, newUserName);
-            // if user name was missing
-            UserUtil.validateUserName(newUserEmail, request, newUserName);
-            // if email was missing
-            UserUtil.validateEmailisEmpty(newUserEmail, request, newUserName);
+            UserUtil.validateEmailRepeat(repeatedEmail, session);
+            // if email was empty
+            UserUtil.validateEmailisEmpty(newUserEmail, session);
+            // if user name was empty
+            UserUtil.validateUserName(newUserName, session);
             // if one of the passwords was empty or they didn't match
-            UserUtil.validatePasswords(newUserEmail, request, newUserName, newUserPasswordConfirm, newUserPassword);
-            getServletContext().getRequestDispatcher("/users/create.jsp").forward(request, response);
+            UserUtil.validatePasswords(newUserPasswordConfirm, newUserPassword, session);
+            doGet(request, response);
         }
 
         User user = new User(newUserEmail, newUserName, newUserPassword);
